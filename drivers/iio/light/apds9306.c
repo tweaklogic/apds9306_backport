@@ -1255,7 +1255,8 @@ static int apds9306_write_event_config(struct iio_dev *indio_dev,
 			if (ret)
 				break;
 
-			return pm_runtime_resume_and_get(data->dev);
+			ret = pm_runtime_resume_and_get(data->dev);
+			break;
 		} else {
 			if (!enabled) {
 				ret = 0;
