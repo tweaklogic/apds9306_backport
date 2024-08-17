@@ -1,4 +1,4 @@
-### APDS9306 Ambient Light Sensor driver backport
+## APDS9306 Ambient Light Sensor driver backport
 
 Backport of Avago (Broadcom) APDS9306 Ambient Light Sensor Linux kernel driver to work with older Linux kernel versions from 5.15.67 to 6.9.9. The mainlined version should be used from 6.10 onwards. 
 
@@ -11,49 +11,52 @@ __This driver uses IIO GTS (Gain Time Scale) helper namespace written by Matti V
 IIO GTS gets compiles as a separate ko file and is a dependency for APDS9306 driver.
 IIO GTS support is available since Linux kernel 6.4 (approx). The build script in this repository detects the kernel version of the target and builds `industrialio-gts-helper.ko` module if the target kernel version is prior to 6.4.
 
-#### About
+### About
 APDS9306 is an Ambient Light Sensor which comes in two packages - *apds-9306* and *apds-9306-65*.
 The datasheet can be found [here](https://docs.broadcom.com/docs/AV02-4755EN).
 
-#### Static build
+### Breakout board
+Breakout board for APDS9306-65 can be found [here.](https://github.com/tweaklogic/apds9306-65_breakout-board)
+
+### Static build
 This driver can be built statically in the Linux kernel image by copying the *drivers* and *include* directories into the target Linux kernel source and updating the Makefile(s), Kconfig(s) and using menuconfig. This process is not covered here.
 
-#### External build
+### External build
 Output of the build script in this repo:
 ```
 PC $> ls output/
 apds9306.ko  industrialio-gts-helper.ko
 ```
 
-#### Reference hardware
+### Reference hardware
 Reference board used here is STM32MP157C-DK2 from ST micro electronics.
 Link to development board can be found [here](https://www.st.com/en/evaluation-tools/stm32mp157c-dk2.html).
 
 
-#### Reference embedded Linux ecosystem
+### Reference embedded Linux ecosystem
 Reference embedded Linux ecosystem is OpenSTLinux from ST micro electronics as well.
 The process and the steps for building are similar for any other Yocto based distributions.
 Link to set up the board with a Starter pack can be found [here](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2/Let%27s_start/Populate_the_target_and_boot_the_image).
 
-#### Setting up the build environment
+### Setting up the build environment
 1. A cross-compiler toolchain has to be setup.
    Link to OpenSTLinux SDK setup can be found [here](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2/Develop_on_Arm%C2%AE_Cortex%C2%AE-A7/Install_the_SDK).
 2. A Linux kernel build output directory has to be present.
    Steps to cross-compile Linux kernel for OpenSTLinux can be found [here](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2/Develop_on_Arm%C2%AE_Cortex%C2%AE-A7/Modify,_rebuild_and_reload_the_Linux%C2%AE_kernel).
 
-#### Build script
+### Build script
 ```
 PC $> ./apds9306_backport.sh
 ./apds9306_backport.sh build <kernel_build_dir_path>
 ./apds9306_backport.sh clean <kernel_build_dir_path>
 ```
 
-#### Toolchain setup
+### Toolchain setup
 ```
 PC $> source ../../toolchain_mickledore-mpu-v24.06.26/environment-setup-cortexa7t2hf-neon-vfpv4-ostl-linux-gnueabi
 ```
 
-#### Compile
+### Compile
 For Linux kernel 5.15.67:
 ```
 PC $> ./apds9306_backport.sh build ../../kernel_kirkstone_22.11.23/stm32mp1-openstlinux-5.15-yocto-kirkstone-mp1-v22.11.23/sources/arm-ostl-linux-gnueabi/linux-stm32mp-5.15.67-stm32mp-r2-r0/build
@@ -64,13 +67,13 @@ PC $> ./apds9306_backport.sh build ../../kernel_mickledore-mpu-v24.06.26/stm32mp
 ```
 **apds9306.ko**  and **industrialio-gts-helper.ko** files are places in the *output* directory.
 
-#### Compile device tree blob
+### Compile device tree blob
 A reference device tree source file is provided - **arch/arm/boot/dts/stm32mp157c-dk2.dts**
 Node name is **light-sensor@52**
 Steps to compile the kernel and device tree can be found [here](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2/Develop_on_Arm%C2%AE_Cortex%C2%AE-A7/Modify,_rebuild_and_reload_the_Linux%C2%AE_kernel).
 A device tree overlay file can also be used.
 
-#### Install
+### Install
 Copy across the device tree blob (reboot required):
 
 ```
@@ -90,7 +93,7 @@ ssh root@192.168.7.1 /sbin/depmod -a
 ssh root@192.168.7.1 sync
 ```
 
-#### Verify
+### Verify
 ```
 root@stm32mp1:~# modinfo apds9306
 filename:       /lib/modules/6.1.82/kernel/drivers/iio/light/apds9306.ko
@@ -105,18 +108,18 @@ name:           apds9306
 vermagic:       6.1.82 SMP preempt mod_unload modversions ARMv7 p2v8 
 ```
 
-#### Run
+### Run
 ```
 BOARD $> modprobe apds9306
 ```
 
-#### Clean
+### Clean
 Removes the ***output*** directory and build artifacts.
 ```
 PC $> ./apds9306_backport.sh clean ../../kernel_kirkstone_22.11.23/stm32mp1-openstlinux-5.15-yocto-kirkstone-mp1-v22.11.23/sources/arm-ostl-linux-gnueabi/linux-stm32mp-5.15.67-stm32mp-r2-r0/build
 ```
 
-#### Test
+### Test
 Assuming the target board has only one APDS9306 sensor installed, the *apds9306_test.sh* can be run to test the device through sysfs interface.
 Copy across *apds9306_test.sh*
 ```
@@ -170,5 +173,5 @@ Reading raw values
 ^CRestoring scale...
 ```
 
-#### Using interrupts
+### Using interrupts
 TODO
