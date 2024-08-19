@@ -174,4 +174,4 @@ Reading raw values
 ```
 
 ### Using interrupts
-TODO
+Here is a [link](https://www.tweaklogic.com/using-ambient-light-sensor-interrupts-in-linux/) on using IIO events (interrupts) with this device.
