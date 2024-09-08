@@ -175,3 +175,5 @@ Reading raw values
 
 ### Using interrupts
 Here is a [link](https://www.tweaklogic.com/using-ambient-light-sensor-interrupts-in-linux/) on using IIO events (interrupts) with this device.
+
+[![ALS_Interrupt](https://img.youtube.com/vi/_-5659v76c0/0.jpg)](https://www.youtube.com/_-5659v76c0)
